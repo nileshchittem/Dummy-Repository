@@ -1,0 +1,347 @@
+    1  sudo add-apt-repository ppa:yannubuntu/boot-repair
+    2  sudo apt-get update
+    3  sudo apt-get install -y boot-repair && boot-repair
+    4  boot-repair
+    5  Browse: Home Windows Install Ubuntu 14.04 alongside Windows 8.1 in 10 easy steps
+    6  Install Ubuntu 14.04 alongside Windows 8.1 in 10 easy steps
+    7  Posted by Gary Newell  |  at  23:27 333 comments
+    8  Introduction
+    9  By far the most read article on this site shows how to install Ubuntu alongside Windows 8 in 10 easy steps. 
+   10  Those instructions have helped people install Ubuntu since 12.04 but now with the introduction of Ubuntu 14.04 and many Windows users upgrading to Windows 8.1 there are a few new challenges that have been brought to the table.
+   11  Over the weekend I have played around with dual booting Ubuntu 14.04 and Windows 8.1 and the following article highlights the steps that I took to get it to work.
+   12  Click here if you would prefer to dual boot Ubuntu with Windows 7.
+   13  Click here if you would prefer to dual boot Linux Mint with Windows 8.1.
+   14  It may be tempting to jump in and skip the steps that show you how to back up your Windows files but I can't impress on you enough the importance of doing so.
+   15  Update
+   16  I have written a new guide for dual booting Windows 8.1 and Ubuntu.
+   17  There are a few differences to the instructions below using the new method which are mainly as follows:
+   18      The backup section advises only using Macrium Reflect for creating system images
+   19      The USB drive created uses a new method to create a UEFI bootable USB drive
+   20      Instead of using the "something else" option the new guide allows you to use the default install alongside Windows 8.1 option.
+   21  In essence I have found the Windows recovery tools to be flaky with regards to restoring from a system image. (especially if you move the recovery image around). For instance if you create a recovery image on an external hard drive and then copy it to another external hard drive or NAS drive there is no guarantee that Windows 8.1 will recognise it.
+   22  I have used Macrium Reflect for creating system images and restoring them (even after moving images around) and it works. The software is free to use as well although there is a paid for version for extra options.
+   23  Creating a UEFI bootable only Ubuntu USB drive ensures that Ubuntu is installed to a GPT partition. The Ubuntu installer therefore also recognises the existence of the Windows 8.1 partition. This enables you to choose the default option for installing alongside Windows 8.1
+   24  Using this method it appears that there is no longer a requirement to turn off secure boot.
+   25  I still had to manually set the Windows bootloader using BCDEdit.
+   26  Feel free to give the new guide a try or you can stick with the tried and trusted method below.
+   27  A review of Ubuntu 14.04
+   28  Before you start it might be worth reading the latest review of Ubuntu 14.04 to make sure dual booting with Windows 8.1 is something you want to do.
+   29  1. Back up Windows
+   30  There are two steps to backing up Windows:
+   31      Create a recovery drive for backing up Windows 8.1
+   32      Create a file history for backing up personal files
+   33  For the recovery drive you will need a USB flash drive with at least 16gb of space. Insert the USB drive into your computer. You should make sure that you have no data that you need to keep on the drive as it will be wiped during this process. If you don't have a USB drive you can create recovery DVDs.
+   34  For the file history backup I would recommend using an external hard drive but it depends on how much data you have. If you don't have much then a USB drive will do. If you have nothing else to hand you can backup to DVDs. 
+   35  This guide assumes that you are using Windows 8.1 but most of the steps will be similar to Windows 8.
+   36  In my original guide I showed how to create recovery disks and a system image using the Windows 7 recovery tools.
+   37  In this guide I use the simpler Windows 8 recovery drive tool.
+   38  To create a recovery drive press the super key (Windows key) on your keyboard and then click on the magnifying glass in the top right corner.
+   39  Now start typing "Recovery".
+   40  An option will appear called "Create a recovery drive". Click this option. You will be asked if you are happy to give permissions for this application to run. The answer is yes you do.
+   41  A recovery drive lets you get Windows 8.1 back to a working state. 
+   42  When the "Create a recovery drive" window appears click "Next" to continue.
+   43  Click the available USB drive to be used and click "Next".
+   44  A message will appear confirming that you want to create the drive and you are warned again that all the data on the target drive will be deleted.
+   45  If you are happy that you don't need anything on your recovery drive click "Create".
+   46  It will take a few minutes for the drive to be created but eventually a screen will appear stating that the drive is ready.
+   47  Safely remove the drive, put it in a small plastic bag like a sandwich bag or in an envelope. Label the bag or envelope and place it somewhere very safe. 
+   48  If something goes wrong either whilst installing Ubuntu or later on in time you will be grateful that you followed these steps.
+   49  Now insert the drive that you want to use for storing all your personal data.
+   50  To be honest you should do this whether you plan to continue installing Ubuntu or not. 
+   51  Press the "super" key (Windows key) on your keyboard and then press the search icon in the top right corner.
+   52  Enter the words "File History". Click the option that says "Save backup copies of your files with File History".
+   53  A screen similar to the one above should appear. Click on the "Off" button to flick the switch to "On" for File History.
+   54  Click the link that says "Select a different drive". Find the drive that you want to back up to and click "Back up now".
+   55  After a while all your files will be backed up to the new drive.
+   56  Note that this application assumes that you store all of your files under your Documents, Music, Pictures, Videos and Desktop folder. If you don't then I would recommend copying any file that that isn't stored in these folders manually using Windows Explorer.
+   57  2. Create a bootable Ubuntu USB drive
+   58  If you want to skip a step or if you have a poor internet connection then you can click here to buy a copy of Ubuntu 14.04 on a USB drive. Of course if you do that you will need to bookmark this page and wait until the USB drive arrives in the post.
+   59  If you choose to create your own bootable USB drive you will need another blank USB drive to continue. 
+   60  Insert the USB drive into your computer.
+   61  Visit http://www.ubuntu.com/download/desktop. Make sure that you choose the 64-bit version. Click "Download" to download the file.
+   62  To create a bootable USB drive the tool that I advocate using is the Universal USB Installer from www.pendrivelinux.com.
+   63  Follow the above link for pendrive Linux and scroll half way down the page until you see the "Download UUI" link. Click on the download link and wait for the program to download.
+   64  When the download has completed double click on the executable.
+   65  When the license agreement screen appears read it and then click "I Agree" if you accept the license.
+   66  Creating the drive is fairly straight forward.
+   67  The first thing to do is choose your distribution of choice, in this case Ubuntu, from the dropdown list.
+   68  Click on the "Browse" button. Find the downloaded Ubuntu ISO.
+   69  Select your chosen USB drive letter and make sure that the "We will format" option is checked.
+   70  At this point you can create the USB drive so that it persists data. This makes it possible to install software when using the live Ubuntu version and it will still be available the next time you boot from the USB drive.
+   71  Click "Create" to continue.
+   72  A summary screen will tell you what is about to happen.
+   73  Basically your USB drive is about to be completely wiped and Ubuntu is about to be installed as a live image to it.
+   74  If you are happy to continue click "Yes".
+   75  You will now see a progress bar showing how far through the process the installer is and how long it is expected to last.
+   76  Feel free to get a comfort break, have a drink or boil and egg at this point.
+   77  3. Shrink your Windows partition
+   78  Windows takes up the whole of the drive when it is first installed. In order to install Ubuntu you will need to make space for it.
+   79  Press the "super key" (Windows key) on your keyboard and click the magnifying glass in the top right corner. In the search box start typing "Partitions".
+   80  Click on the option called "Create and format partitions". This will bring up the "Disk Management" screen.
+   81  To shrink the drive, right click on the "OS (C:)" volume and select "Shrink volume".
+   82  A screen will appear showing how much you can shrink the drive by. You can of course choose to shrink the drive by less than offered but never go for any more than offered as you will break your Windows 8.1 operating system if you do.
+   83  Click "Shrink" to continue.
+   84  When you are finished you will see that there is a lot of unpartitioned space. This is where Ubuntu will be installed.
+   85  4. Turn off fast boot
+   86  To be able to boot to your Ubuntu USB drive you will need to turn off the fast boot option.
+   87  Press the "super" key (Windows key) and then click the magnifying glass in the top right corner.
+   88  Enter "Control Panel". Click on the "Control Panel" option that appears.
+   89  When the "Control Panel" appears click on the "System and Security" heading.
+   90  Now click on "Power Options".
+   91  On the following screen click on "Choose what the power button does".
+   92  A screen will appear with the heading "Define power buttons and turn on password protection".
+   93  Scroll down until you see "Shutdown Settings".
+   94  An option should be available called "Turn on fast startup" (recommended).
+   95  Uncheck this option.
+   96  Click "Save Changes".
+   97  5. Turn off secure boot
+   98  In theory you don't need to do this any more. In practise it is almost certain that you will.
+   99  Turning off secure boot depends on the make and model of your computer as each one has slightly different methods for turning it off.
+  100  Basically though click on the "super" key (Windows key) and then click on the power icon next to your user name.
+  101  Hold down the shift key on your keyboard and select restart computer. Keep the shift key held down until your computer reboots.
+  102  You will now have an option to go into your UEFI boot settings. 
+  103  Within the UEFI settings look for the option to turn off secure boot. You don't have to switch to legacy mode and you shouldn't switch to legacy mode as this will not help your cause.
+  104  Save and exit the UEFI settings
+  105  6. Install Ubuntu
+  106  When you have turned off secure boot, save and reboot. You will probably end up back in Windows.
+  107  Now at this point to boot into Ubuntu on the USB drive I had to again hold down the shift key whilst rebooting the computer. 
+  108  One of the options that appeared let me boot from the USB drive into Ubuntu 14.04 live and you should have a similar option available to you.
+  109  When you first boot into the live version of Ubuntu you will be presented with a screen similar to the one above. The only difference is that I have closed the window that shows all the keyboard shortcuts to make it easier to highlight the "Install Ubuntu 14.04 LTS" icon.
+  110  To begin the installation double click on the "Install Ubuntu 14.04 LTS" icon.
+  111  The first thing you need to do is decide which language you would like to use.
+  112  Unless you feel like the challenge isn't great enough I would choose the language that you would normally use.
+  113  Click "Next" to continue.
+  114  The next screen lets you choose which internet connection to use whilst installing Ubuntu.
+  115  I always opt for not wanting to connect and there is a good reason for that.
+  116  I live in the countryside and my internet connection is poor. I don't want the installer failing half way through because the connection dropped.
+  117  I prefer to install the operating system and run updates as a separate task later on.
+  118  If you have a good broadband connection you may wish to connect to it now so that you download updates as you go. This will slow down the initial install but will save time later on as you won't have to install lots of updates.
+  119  When you click "Next" you will be shown a tick list highlighting how prepared you are for installing Ubuntu.
+  120  As you can see I have 2 ticks because I have enough disk space and I am plugged into a power source. I chose not to connect to a network as this stage (hence the cross).
+  121  Click "Continue".
+  122  In the past there used to be an option on the "Installation Type" screen to install alongside Windows.
+  123  If you are installing alongside Windows 7 on a non-EFI based system then you will still have that option.
+  124  Click on "Something Else" and click "Next".
+  125  The next screen may look rather intimidating but it is just showing your current disk layout.
+  126  Be very careful with the next few steps. 
+  127  If you haven't taken that Windows backup, quit the installation, reboot and follow step 1 of this tutorial again.
+  128  Look at the image above. You will see a large portion of free space (710155 MB). This is where I put Ubuntu.
+  129  The free space is going to be split into 3.
+  130  The first partition is for Ubuntu and will be 50 Gigabytes in size.
+  131  The second partition is for your home partition and stores configuration files and your personal files such as music, pictures etc.
+  132  The third partition is for swap space and is used for intensive operations and suspending the computer.
+  133  When you have found the partition with free space, click on it and press the plus symbol (+) under the disk layout.
+  134  In the size box enter 50000, select logical as the partition type, select beginning of this space and choose EXT4 as the file system.
+  135  For the mount point choose / (this means root).
+  136  Click "OK".
+  137  The disk layout screen should now show a new partition for /.
+  138  Find the large section of free space again, click on it and press the plus symbol again (+).
+  139  This time you want to set the size to be the rest of the free disk space minus 2x the amount of memory in your computer.
+  140  If you have 8 gigabytes RAM, subtract 16 gigabytes.
+  141  Again choose "Logical" as the partition type, beginning of this space for where to put the partition and EXT4 as the file system.
+  142  For the mount point choose /home.
+  143  The issue of how much swap space to use is constantly up for debate. Some people say you don't need any at all, some go for 1.5 times the amount of RAM and some say 2x.
+  144  Unless disk space is at a premium I would just go for the 2x and have done with it.
+  145  In theory if you are running lots of intensive processes such as video editing then the swap space is used to store memory that isn't currently being used (swapped) to disk. This is disk intensive and slows down your computer but it will help to prevent a crash. Swap space is also used for suspending your computer.
+  146  Now find the free disk space again, click on it and press the plus symbol. (+).
+  147  Leave the size as the rest of the free disk space, choose logical as the file system and beginning of this space as the location.
+  148  Choose "swap area" as the mount point.
+  149  The final thing to concern yourself with when partitioning is where to install the boot loader.
+  150  By default it is set to /dev/SDA on the "Installation Type" screen. This can be changed but unless you are using multiple disks you should leave this well alone.
+  151  Press "Install Now" to continue.
+  152  The installation has now begun but whilst it is taking place you are asked a few configuration type questions.
+  153  First of all choose your location by clicking on the map.
+  154  Press "Continue".
+  155  The next screen asks you to choose your keyboard layout.
+  156  Simply choose the correct one for you and press "Continue".
+  157  You will now be required to create a default user.
+  158  Enter your name, a name to identify your computer, a username and a password.
+  159  You can also choose whether to log in automatically or require a password each time.
+  160  A progress bar will now show you how far through the installation you are.
+  161  You can also view a selection of messages telling you all about Ubuntu.
+  162  At this point you can take another comfort break and depending on your computer's speed you will either have time to boil an egg or wash your car.
+  163  At the end of the process you will be asked whether you want to reboot to start using Ubuntu or to continue using the live version.
+  164  When I rebooted it went straight back into Windows and I had to reboot back into the live session anyway. So at this point you can either take my word for it and stay in the live session or you can reboot and see if the installation has worked without any further steps required.
+  165  7. Boot Repair
+  166  I am going to assume that you chose to restart now and your computer booted straight into Windows without giving the option for Ubuntu.
+  167  Log into Windows and click the power icon next to your username in the top right corner.
+  168  Hold down the shift key and select to restart your computer. Keep the shift key held down until your computer reboots.
+  169  At the point of the UEFI settings appearing choose to boot from USB again.
+  170  You will now be booted back into the live session of Ubuntu.
+  171  Click on the network icon in the top right corner and choose your network connection. You will probably need to enter the security key. (If not then when you have finished with this process consider checking your router settings because your internet connection is wide open).
+  172  Now open up a terminal by pressing the "super" key (Windows key) and typing "term".
+  173  Within the terminal window enter the following commands one by one.
+  174  sudo add-apt-repository ppa:yannubuntu/boot-repair
+  175  sudo sh -c "sed -i 's/trusty/saucy/g' /etc/apt/sources.list.d/yannubuntu-boot-repair-trusty.list"
+  176  boot-repair
+  177  sudo add-apt-repository ppa:yannubuntu/boot-repair
+  178  sudo apt-get update
+  179  sudo apt-get install -y boot-repair && boot-repair
+  180  sudo add-apt-repository ppa:gezakovacs/ppa
+  181  sudo apt-get install unetbootin
+  182  sudo mount
+  183  sudo apt-get install ntfsprogs
+  184  sudo fdisk -lu
+  185  sudo blkid
+  186  sudo mkdir /media/Data
+  187  sudo cp /etc/fstab /etc/fstab.orig
+  188  gksudo gedit /etc/fstab
+  189  locale
+  190  sudo mount -a
+  191  sudo mount -ro
+  192  sudo mount -a -ro
+  193  gksudo gedit /etc/fstabsudo mv /etc/fstab.orig /etc/fstab
+  194  ls /lib/modules/2.6.18-5-686/kernel/fs/ | grep ntfs 
+  195  fdisk -l | grep NTFS 
+  196  sudo fdisk -l | grep NTFS 
+  197  mkdir /mnt/ntfs 
+  198  sudo mkdir /mnt/ntfs 
+  199  sudo mount -t ntfs /dev/sdb5 /mnt/ntfs 
+  200  sudo mount -t ntfs /dev/sda5 /mnt/ntfs 
+  201  wget http://easynews.dl.sourceforge.net/sourceforge/fuse/fuse-2.7.1.tar.gz 
+  202  cd Downloads/
+  203  tar xzf fuse-2.9.4.tar.gz 
+  204  cd fuse-2.9.4/
+  205  ./configure --exec-prefix=/; make; make install 
+  206  wget http://www.ntfs-3g.org/ntfs-3g-1.1120.tgz
+  207  mount -t ntfs-3g /dev/sda5 /mnt/ntfs/ 
+  208  sudo mount -t ntfs-3g /dev/sda5 /mnt/ntfs/ 
+  209  sudo fdisk -l
+  210  sudo unmount /media/sda5
+  211  sudo umount /media/sda5
+  212  sudo mkdir /windows
+  213  sudo nano /etc/fstab
+  214  sudo  mkdir /mnt/windrv
+  215  su -s
+  216  sudo -s
+  217  cd ..
+  218  mkdir /mnt/windows 
+  219  mount -t ntfs /dev/sda5 /mnt/windows -o "umask=022" 
+  220  sudo mount -o ro /dev/sda5 /media/windows
+  221  mkdir /media/windows
+  222  sudo mount -o ro /dev/sda5 /media/windows
+  223  sudo mount -o ro /dev/sda2 /media/data
+  224  mkdir media/wind
+  225  sudo mkdir /media/wind
+  226  sudo mount -o ro /dev/sda2 /media/data
+  227  sudo mount -o ro /dev/sda2 /media/wind
+  228  sudo vim /etc/grub.d/40_custom 
+  229  sudo nano /etc/grub.d/40_custom 
+  230  sudo grub-install /dev/sda2
+  231  sudo /boot/efi/EFI/
+  232  sudo mkdir /boot/efi/EFI/Microsoft/Boot/
+  233  cd bbot
+  234  cd /boot/
+  235  mkdir efi
+  236  sudo mkdir efi
+  237  cd efi
+  238  sudo mkdir EFI
+  239  cd EFI
+  240  dmraid -D -r
+  241  sudo apt-get install dmraid
+  242  dmraid -D -r
+  243  sudo dmraid -D -r
+  244  sudo update-grub
+  245  sudo apt-get update
+  246  python -c "import sys; sys.path = sys.path[1:]; import django; print(django.__path__)"
+  247  django-admin --version
+  248  python -c "import sys; sys.path = sys.path[1:]; import django; print(django.__path__)"
+  249  sudo cd /usr/lib/python2.7/dist-packages
+  250  cd /usr/lib/python2.7/dist-packages
+  251  sudo rm -R Django-1.7.6.egg-info/
+  252  python -c "import sys; sys.path = sys.path[1:]; import django; print(django.__path__)"
+  253  django-admin --version
+  254  sudo add-apt-repository ppa:webupd8team/sublime-text-2
+  255  sudo add-apt-repository ppa:webupd8team/sublime-text-3
+  256  subl
+  257  python
+  258  sudo apt-get install python-django
+  259  django-admin --version
+  260  sudo apt-get update
+  261  sudo apt-get install python-pip
+  262  sudo pip install django
+  263  django-admin --version
+  264  sudo pip install django
+  265  django-admin --version
+  266  sudo apt-get update
+  267  django-admin --version
+  268  sudo apt-get install python-pip
+  269  sudo pip install django
+  270  django-admin --version
+  271  sudo pip3 install Django
+  272  sudo apt-get install python-pip3
+  273  sudo apt-get install python3-pip
+  274  sudo apt-get install --reinstall python2.7
+  275  sudo aptitude reinstall python2.7
+  276  sudo dpkg -P python2.7
+  277  sudo pip3 install Django
+  278  django-admin --version
+  279  sudo pip3 install Django
+  280  cd shopping_cart/
+  281  django manage.py runserver
+  282  django-admin --version
+  283  django-admin maange.py runserver
+  284  python manage.py runserver
+  285  python manage.py syncdb
+  286  sudo apt-get install bootstrap
+  287  cd ..
+  288  sudo apt-get install bootstrap
+  289  sudo apt-get update
+  290  sudo apt-get install apache2
+  291  python -c "import sys; sys.path = sys.path[1:]; import django; print(django.__path__)"
+  292  django-admin --version
+  293  sudo mysql_install_db
+  294  sudo apt-get install mysql-server libapache2-mod-auth-mysql php5-mysql
+  295  sudo mysql_install_db
+  296  sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt
+  297  sudo apt-get install bootstrap
+  298  sudo apt-get install git-core
+  299  pip install django-bootstrap-form
+  300  sudo apt-get install phpmyadmin
+  301  sudo php5enmod mcrypt
+  302  sudo service apache2 restart
+  303  git
+  304  git init
+  305  sudo apt-get install git
+  306  ./manage.py collectstatic
+  307  git
+  308  git pull https://github.com/nileshchittem/Dummy-Repository.git
+  309  git init
+  310  git pull https://github.com/nileshchittem/Dummy-Repository.git
+  311  git clone https://github.com/nileshchittem/Dummy-Repository.git
+  312  cd Dummy-Repository/
+  313  git init
+  314  git config --global user.name nileshchittem
+  315  git config --global user.email nilesh.chittemreddy@wisecells.com
+  316  git remote -v
+  317  git remote upstream https://github.com/darpankakadia/Dummy-Repository
+  318  git remote add https://github.com/darpankakadia/Dummy-Repository upstream
+  319  git remote add upstream https://github.com/darpankakadia/Dummy-Repository 
+  320  git remote -v
+  321  git branch
+  322  git branch SALP
+  323  git branch
+  324  git checkout master
+  325  git checkout SALP
+  326  git status
+  327  git stash clear
+  328  git stash
+  329  git fetch upstream
+  330  git merge upstream/SALP SALP
+  331  git stash apply
+  332  git add .
+  333  git commit -m "new test"
+  334  git push origin SALP
+  335  cd ..
+  336  git clone https://github.com/nileshchittem/Dummy-Repository.gitcd .
+  337  git pull https://github.com/nileshchittem/Dummy-Repository.git
+  338  git status
+  339  cd shopping_cart/
+  340  python manage.py syncdb
+  341  python manage.py runserver
+  342  sudo mount -o ro /dev/sda5 /media/windows
+  343  sudo mount -o ro /dev/sda2 /media/wind
+  344  cd ..
+  345  history >>history.txt
+  346  cd Dummy-Repository/
+  347  history >> history.txt
